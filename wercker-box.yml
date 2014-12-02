@@ -1,0 +1,24 @@
+name: perl
+version: 1.0.0
+description: Stable perl box
+inherits: wercker/ubuntu12.04-webessentials@1.0.4
+type: main
+platform: ubuntu@12.04
+keywords:
+  - perl
+  - perl5
+script: |
+  sudo apt-get update -y
+  sudo apt-get install -y libssl-dev libmysqlclient-dev
+
+  # install perl
+  curl https://raw.githubusercontent.com/tokuhirom/Perl-Build/master/perl-build | sudo perl - 5.20.1 /opt/perl-5.20.1/
+
+  # install cpanm
+  curl -L http://cpanmin.us | /opt/perl-5.20.1/bin/perl - --sudo App::cpanminus
+
+  # install carton
+  sudo /opt/perl-5.20.1/bin/cpanm Carton -n
+env:
+  PATH: "/opt/perl-5.20.1/bin:$PATH"
+
